@@ -2,11 +2,12 @@ package com.addressbook;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class AddInfo {
-    AddressBook contact=new AddressBook();
+    AddressBook contact = new AddressBook();
     ArrayList<AddressBook> array = new ArrayList<AddressBook>();
-    public void addContact(){
-        Scanner sc= new Scanner(System.in);
-        AddressBook contact=new AddressBook();
+
+    public void addContact() {
+        Scanner sc = new Scanner(System.in);
+        AddressBook contact = new AddressBook();
         System.out.println("Enter First Name: ");
         String firstname = sc.next();
         System.out.println("Enter last Name: ");
@@ -45,16 +46,17 @@ public class AddInfo {
 
 
     }
-    public void editPerson(){
+
+    public void editPerson() {
         System.out.println("Enter First name: ");
         Scanner sc1 = new Scanner(System.in);
         String firstName = sc1.next();
-        if(firstName.equals(contact.getFirstName())){
+        if (firstName.equals(contact.getFirstName())) {
             System.out.println("\nChoose attribute you want to change:");
             System.out.println("1.First Name\n2.Last Name\n3.Address\n4.City\n5.State\n6.ZipCode\n7.Phone Number\n8.Email");
             int choice = sc1.nextInt();
 
-            switch (choice){
+            switch (choice) {
                 case 1:
                     System.out.println("Enter the correct first Name :");
                     firstName = sc1.next();
@@ -106,5 +108,15 @@ public class AddInfo {
         System.out.println(contact.getZip());
         System.out.println(contact.getPhoneNumber());
         System.out.println(contact.getEmail());
+    }
+
+    public void deletePerson() {
+        Scanner sc3 = new Scanner(System.in);
+        System.out.println("Enter the first name of the person to be deleted");
+        String firstName = sc3.next();
+        if (firstName.equals(contact.getFirstName())) {
+            array.remove(contact);
+            System.out.println("Data is deleted");
+        }
     }
 }

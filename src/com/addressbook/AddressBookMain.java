@@ -9,6 +9,8 @@ public class AddressBookMain {
         boolean changes = true;
 
         do{
+            System.out.println("\nChoose the operation you want to perform");
+            System.out.println("1.Add To Address Book\n2.Edit Existing Entry\n3.Delete Contact\n4.Exit Address book System");
             switch (choose){
 
                 case 1:
@@ -18,10 +20,11 @@ public class AddressBookMain {
                     addInfo.editPerson();
                     break;
                 case 3:
+                    addInfo.deletePerson();
+                    break;
+                case 4:
                     changes = false;
                     System.out.println("We are exiting");
-
-
             }
 
         }while (changes);
