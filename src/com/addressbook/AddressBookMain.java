@@ -6,9 +6,9 @@ public class AddressBookMain {
         System.out.println("Welcome to Address Book");
         AddressBookDictionary addressBookDictionary=new AddressBookDictionary();
         addressBookDictionary.operationDictionary();
-        AddInfo addInfo = new AddInfo();
+        /*AddInfo addInfo = new AddInfo();
         addInfo.operations();
-
+*/
     }
 
 }

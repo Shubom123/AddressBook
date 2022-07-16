@@ -1,12 +1,13 @@
 package com.addressbook;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class AddInfo implements AddInfoIF {
-    public final int NUM_OF_PEOPLE=10;
     Scanner sc= new Scanner(System.in);
-    public static int numberOfEntries = 0;
+    HashMap<String,AddressBook> addressBookHashMap=new HashMap<String,AddressBook>();
     public String addressBookName;
-    AddressBook[] array=new AddressBook[NUM_OF_PEOPLE];
+    boolean present=false;
     public String getAddressBookName(){
         return addressBookName;
     }
@@ -46,137 +47,123 @@ public class AddInfo implements AddInfoIF {
 
     @Override
     public void addContact(){
-        System.out.println("Enter number of people you want to add to Address book");
-        int numberOfPeople= sc.nextInt();
-        int lastEntry=numberOfPeople+numberOfEntries;
-
-        if(lastEntry>NUM_OF_PEOPLE){
-            System.out.println("Address Book is FULL !");
-            return;
-        }
-        else{
-            for(int index=numberOfEntries; index<lastEntry; index++){
-                AddressBook contact=new AddressBook();
-                System.out.println("Enter the details of the person"+(index+1));
-                System.out.println("Enter First Name: ");
-                String firstname = sc.next();
-                System.out.println("Enter last Name: ");
-                String lastname = sc.next();
-                System.out.println("Enter Address: ");
-                String adderss = sc.next();
-                System.out.println("Enter City: ");
-                String city = sc.next();
-                System.out.print("Enter State: ");
-                String state = sc.next();
-                System.out.print("Enter Zip Code: ");
-                int zip = sc.nextInt();
-                System.out.print("Enter Phone Number: ");
-                long phoneNumber = sc.nextLong();
-                System.out.println("Enter Email: ");
-                String email = sc.next();
-
-                contact.setFirstName(firstname);
-                contact.setLastName(lastname);
-                contact.setAddress(adderss);
-                contact.setCity(city);
-                contact.setState(state);
-                contact.setZip(zip);
-                contact.setPhoneNumber(phoneNumber);
-                contact.setEmail(email);
-                array[index]=contact;
-                numberOfEntries++;
+        AddressBook addressBook=new AddressBook();
+        System.out.println("Enter First Name: ");
+        String firstname = sc.next();
+        addressBookHashMap.entrySet().stream().forEach(entry ->{
+            if(entry.getKey().equals(firstname.toLowerCase())){
+                System.out.println("Already exist");
+                present=true;
+                return;
             }
-        }
+        });
+        if(present==false){
+            System.out.println("Enter last Name: ");
+            String lastname = sc.next();
+            System.out.println("Enter Address: ");
+            String adderss = sc.next();
+            System.out.println("Enter City: ");
+            String city = sc.next();
+            System.out.print("Enter State: ");
+            String state = sc.next();
+            System.out.print("Enter Zip Code: ");
+            int zip = sc.nextInt();
+            System.out.print("Enter Phone Number: ");
+            long phoneNumber = sc.nextLong();
+            System.out.println("Enter Email: ");
+            String email = sc.next();
 
+            addressBook.setFirstName(firstname);
+            addressBook.setLastName(lastname);
+            addressBook.setAddress(adderss);
+            addressBook.setCity(city);
+            addressBook.setState(state);
+            addressBook.setZip(zip);
+            addressBook.setPhoneNumber(phoneNumber);
+            addressBook.setEmail(email);
+            addressBookHashMap.put(firstname.toLowerCase(),addressBook);
+        }
     }
     @Override
     public void editPerson(){
+        AddressBook addressBook=new AddressBook();
         System.out.println("Enter First name: ");
-        for(int index = 0; index <numberOfEntries; index++){
-            AddressBook contact= array[index];
-            String firstName = sc.next();
-            if(firstName.equals(contact.getFirstName())){
-
+        String firstName=sc.next();
+            if(addressBookHashMap.containsKey(firstName)) {
+                addressBook = addressBookHashMap.get(firstName);
                 System.out.println("Choose attribute you want to change:");
                 System.out.println("1.First Name\n2.Last Name\n3.Address\n4.City\n5.State\n6.ZipCode\n7.Phone Number\n8.Email");
                 int choice = sc.nextInt();
 
-                switch (choice){
+                switch (choice) {
                     case 1:
                         System.out.println("Enter the correct first Name :");
                         firstName = sc.next();
-                        contact.setFirstName(firstName);
+                        addressBook.setFirstName(firstName);
                         break;
                     case 2:
                         System.out.println("Enter the correct Last Name :");
                         String lastName = sc.next();
-                        contact.setLastName(lastName);
+                        addressBook.setLastName(lastName);
                         break;
                     case 3:
                         System.out.println("Enter the correct Address :");
                         String address = sc.next();
-                        contact.setAddress(address);
+                        addressBook.setAddress(address);
                         break;
                     case 4:
                         System.out.println("Enter the correct City :");
                         String city = sc.next();
-                        contact.setCity(city);
+                        addressBook.setCity(city);
                         break;
                     case 5:
                         System.out.println("Enter the correct State :");
                         String state = sc.next();
-                        contact.setState(state);
+                        addressBook.setState(state);
                         break;
                     case 6:
                         System.out.println("Enter the correct Zip Code :");
                         int zip = sc.nextInt();
-                        contact.setZip(zip);
+                        addressBook.setZip(zip);
                         break;
                     case 7:
                         System.out.println("Enter the correct Phone Number :");
                         long phoneNumber = sc.nextLong();
-                        contact.setPhoneNumber(phoneNumber);
+                        addressBook.setPhoneNumber(phoneNumber);
                         break;
                     case 8:
                         System.out.println("Enter the correct Email :");
                         String email = sc.next();
-                        contact.setEmail(email);
+                        addressBook.setEmail(email);
                         break;
                 }
             }
-
-        }
-
     }
+
+
+
+
     @Override
     public void deletePerson(){
         System.out.println("Enter the first name of the person to be deleted");
         String firstName = sc.next();
-        for(int index = 0; index <numberOfEntries; index++){
-            AddressBook contact= array[index];
-            if(firstName.equals(contact.getFirstName())){
-                for(int nextIndex = index; nextIndex<array.length-1; nextIndex++) {
-                    array[nextIndex] = array[nextIndex+1];
-
-                }
-                numberOfEntries--;
-                System.out.println("Data is deleted");
-                return;
-
-            }
-
+        if(addressBookHashMap.containsKey(firstName)){
+            addressBookHashMap.remove(firstName);
+            System.out.println("Contact deleted");
+        }
+        else {
+            System.out.println("Contact not found");
         }
     }
+
     @Override
     public void display(){
         System.out.println("Contents of Address Book");
-        for (int index=0;index<numberOfEntries;index++){
-            System.out.println(array[index]);
-
+        for (String contact : addressBookHashMap.keySet()){
+            AddressBook addressBook=addressBookHashMap.get(contact);
+            System.out.println(addressBook);
         }
+
     }
-    @Override
-    public String toString(){
-        return addressBookName;
-    }
+
 }

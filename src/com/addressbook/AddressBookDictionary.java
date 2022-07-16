@@ -1,13 +1,12 @@
 package com.addressbook;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class AddressBookDictionary {
-    public final int NUM_OF_ADDRESSBOOK = 5;
+    public AddInfo addressBook=new AddInfo();
     Scanner scanner = new Scanner(System.in);
-    public AddInfo[] addressBookDictionary = new AddInfo[NUM_OF_ADDRESSBOOK];
-    int numOfAddressbook = 0;
-
+    HashMap<String,AddInfo> addressBookDictionary=new HashMap<String,AddInfo>();
     public void operationDictionary() {
         boolean changes = true;
         do {
@@ -37,50 +36,34 @@ public class AddressBookDictionary {
     }
 
     public void addAddressBook() {
-        System.out.println("You can add only " + (NUM_OF_ADDRESSBOOK - numOfAddressbook) + " books");
-        String addressBookName = "";
-        if (numOfAddressbook == 0) {
-            System.out.println("Enter name of address book");
-            addressBookName = scanner.next();
-            AddInfo addInfo = new AddInfo();
-            addInfo.setAddressBookName(addressBookName);
-            addressBookDictionary[numOfAddressbook] = addInfo;
-            numOfAddressbook++;
-        } else {
-            boolean bookExist = false;
-            for (int index = 0; index < numOfAddressbook; index++) {
-                System.out.println("Enter name of address book");
-                addressBookName = scanner.next();
-                AddInfo addInfo = addressBookDictionary[index];
-                if (addressBookName.equals(addInfo.getAddressBookName())) {
-                    bookExist = true;
-                    System.out.println("Address book already exist");
-                    break;
-                }
-                else {
-                    addInfo.setAddressBookName(addressBookName);
-                    addressBookDictionary[numOfAddressbook] = addInfo;
-                    numOfAddressbook++;
-                }
-            }
+        System.out.println("Enter name of address book");
+        String addressBookName = scanner.next();
+        if (addressBookDictionary.containsKey(addressBookName)) {
+            System.out.println("Address Book already exist");
+            return;
         }
+        AddInfo addInfo = new AddInfo();
+        addInfo.setAddressBookName(addressBookName);
+        addressBookDictionary.put(addressBookName,addInfo);
+        AddInfo addInfo1=new AddInfo();
+        addInfo1.operations();
     }
 
     public void editAddressBook(){
         System.out.println("Enter name of address book you wanna edit");
         String addressBookName=scanner.next();
-        for (int index=0; index<numOfAddressbook; index++){
-            AddInfo addInfo=addressBookDictionary[index];
-            if(addressBookName.equals(addInfo.getAddressBookName())){
-                addInfo.operations();
-            }
+        if(addressBookDictionary.containsKey(addressBookName)){
+            addressBook=addressBookDictionary.get(addressBookName);
+            addressBook.operations();
+        }
+        else{
+            System.out.println("Book doesn't exist");
         }
     }
     public void displayContent(){
-        System.out.println("Content of address book");
-        for (int index=0; index<numOfAddressbook; index++){
-            System.out.println(addressBookDictionary[index]);
-
+        System.out.println("Content of address book dictionary");
+        for (String bookName : addressBookDictionary.keySet()){
+            System.out.println(bookName);
         }
     }
 }
