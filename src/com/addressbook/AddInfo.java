@@ -207,15 +207,31 @@ public class AddInfo implements AddInfoIF {
             System.out.println(bookName);
         }
     }
-    public void searchContent(){
-//        to search the content of address book from dictionary.
+    public void searchContentByCity(){
+//        to search the content using city from address book.
         System.out.println("Enter name of address book you wanna search");
         String addressBookName=scanner.next();
         if(addressBookDictionary.containsKey(addressBookName)){
+//            to check whether book exist or not
             System.out.println("Enter name of city");
             String city=sc.next();
             Stream<Map.Entry<String, AddressBook>> entryStream = addressBookHashMap.entrySet().stream().filter(entry -> entry.getKey().equals(city.toLowerCase()));
                     System.out.println(addressBookHashMap);
+        }
+        else{
+            System.out.println("Book doesn't exist");
+        }
+    }
+    public void searchContentByState(){
+//        to search the content using city from address book.
+        System.out.println("Enter name of address book you wanna search");
+        String addressBookName=scanner.next();
+        if(addressBookDictionary.containsKey(addressBookName)){
+//            to check whether book exist or not
+            System.out.println("Enter name of city");
+            String state=sc.next();
+            Stream<Map.Entry<String, AddressBook>> entryStream = addressBookHashMap.entrySet().stream().filter(entry -> entry.getKey().equals(state.toLowerCase()));
+            System.out.println(addressBookHashMap);
         }
         else{
             System.out.println("Book doesn't exist");
@@ -226,7 +242,7 @@ public class AddInfo implements AddInfoIF {
         boolean changes = true;
         do {
             System.out.println("\nChoose the operation you want to perform");
-            System.out.println("1.Add Address Book\n2.Edit Entry of Existing address book\n3.Display Contact\n4.Search content in addressbook\n5.Exit Address book System");
+            System.out.println("1.Add Address Book\n2.Edit Entry of Existing address book\n3.Display Contact\n4.Search content in address book using city\n5.Search content in address book using state\n6.Exit Address book System");
             switch (scanner.nextInt()) {
                 case 1:
                     addAddressBook();
@@ -241,9 +257,12 @@ public class AddInfo implements AddInfoIF {
                     display();
                     break;
                 case 4:
-                    searchContent();
+                    searchContentByCity();
                     break;
                 case 5:
+                    searchContentByState();
+                    break;
+                case 6:
                     changes = false;
                     System.out.println("We are exiting");
             }
