@@ -5,7 +5,9 @@ import java.util.Scanner;
 import java.util.ArrayList;
 public class AddInfo implements AddInfoIF {
     Scanner sc= new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
     HashMap<String,AddressBook> addressBookHashMap=new HashMap<String,AddressBook>();
+    HashMap<String,AddInfo> addressBookDictionary=new HashMap<String,AddInfo>();
     public String addressBookName;
     boolean present=false;
     public String getAddressBookName(){
@@ -165,5 +167,58 @@ public class AddInfo implements AddInfoIF {
         }
 
     }
-
+    public void addAddressBook() {
+        System.out.println("Enter name of address book");
+        String addressBookName = scanner.next();
+        if (addressBookDictionary.containsKey(addressBookName)) {
+            System.out.println("Address Book already exist");
+            return;
+        }
+        AddInfo addInfo = new AddInfo();
+        addInfo.setAddressBookName(addressBookName);
+        addressBookDictionary.put(addressBookName,addInfo);
+        /*AddInfo addInfo1=new AddInfo();
+        addInfo1.addContact();*/
+    }
+    public void editAddressBook(){
+        System.out.println("Enter name of address book you wanna edit");
+        String addressBookName=scanner.next();
+        if(addressBookDictionary.containsKey(addressBookName)){
+            addressBookDictionary.get(addressBookName);
+            //operations();
+        }
+        else{
+            System.out.println("Book doesn't exist");
+        }
+    }
+    public void displayContent(){
+        System.out.println("Content of address book dictionary");
+        for (String bookName : addressBookDictionary.keySet()){
+            System.out.println(bookName);
+        }
+    }
+    public void operationDictionary() {
+        boolean changes = true;
+        do {
+            System.out.println("\nChoose the operation you want to perform");
+            System.out.println("1.Add Address Book\n2.Edit Entry of Existing address book\n3.Display Contact\n4.Exit Address book System");
+            switch (scanner.nextInt()) {
+                case 1:
+                    addAddressBook();
+                    addContact();
+                    break;
+                case 2:
+                    editAddressBook();
+                    editPerson();
+                    break;
+                case 3:
+                    displayContent();
+                    display();
+                    break;
+                case 4:
+                    changes = false;
+                    System.out.println("We are exiting");
+            }
+        } while (changes);
+    }
 }
