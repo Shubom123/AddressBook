@@ -17,10 +17,9 @@ public class AddInfo implements AddInfoIF {
     public String addressBookName;
     boolean present=false;
 
-    private static void accept(Map.Entry<String, AddressBook> entry) {
-        System.out.println();
+    public ArrayList<AddressBook> getContact() {
+        return new ArrayList<AddressBook>(addressBookHashMap.values());
     }
-
     public String getAddressBookName(){
         return addressBookName;
     }
@@ -246,12 +245,22 @@ public class AddInfo implements AddInfoIF {
             System.out.println("Book doesn't exist");
         }
     }
+    public void sortAddressBook(){
+        List<AddressBook> sortedList = addressBookHashMap.values().stream()
+                .sorted(Comparator.comparing(AddressBook::getFirstName))
+                .collect(Collectors.toList());
+        System.out.println("Sorted Address Book "+this.getAddressBookName());
+        Iterator iterator=sortedList.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+    }
     public void operationDictionary() {
 //        call every method related to address book dictionary to perform multiple operations in the address books.
         boolean changes = true;
         do {
             System.out.println("\nChoose the operation you want to perform");
-            System.out.println("1.Add Address Book\n2.Edit Entry of Existing address book\n3.Display Contact\n4.Search content in addressbook\n5.Exit Address book System");
+            System.out.println("1.Add Address Book\n2.Edit Entry of Existing address book\n3.Display Contact\n4.Search content in addressbook\n5.Sort address book by name\n6.Exit Address book System");
             switch (scanner.nextInt()) {
                 case 1:
                     addAddressBook();
@@ -269,6 +278,9 @@ public class AddInfo implements AddInfoIF {
                     searchContent();
                     break;
                 case 5:
+                    sortAddressBook();
+                    break;
+                case 6:
                     changes = false;
                     System.out.println("We are exiting");
             }
