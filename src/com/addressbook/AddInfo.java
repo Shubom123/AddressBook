@@ -1,8 +1,15 @@
 package com.addressbook;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Stream;
 import java.util.Scanner;
 import java.util.ArrayList;
+
+/*Create a dictionary and add multiple address book in it.
+* Inside those address book add contact details in it and also can delete the contact details
+* from that same address book.
+* After that we can edit the content of the same address book and also can display the content
+* of the dictionary as well as of the address books*/
 public class AddInfo implements AddInfoIF {
     Scanner sc= new Scanner(System.in);
     Scanner scanner = new Scanner(System.in);
@@ -16,9 +23,10 @@ public class AddInfo implements AddInfoIF {
     public void setAddressBookName(String addressBookName){
         this.addressBookName=addressBookName;
     }
+
     @Override
     public void operations(){
-
+        //call every method related to address book to perform multiple operations in the address books.
         boolean changes = true;
 
         do{
@@ -49,6 +57,7 @@ public class AddInfo implements AddInfoIF {
 
     @Override
     public void addContact(){
+//        to add contact details in the address book.
         AddressBook addressBook=new AddressBook();
         System.out.println("Enter First Name: ");
         String firstname = sc.next();
@@ -88,6 +97,7 @@ public class AddInfo implements AddInfoIF {
     }
     @Override
     public void editPerson(){
+//        edit contents in the address book.
         AddressBook addressBook=new AddressBook();
         System.out.println("Enter First name: ");
         String firstName=sc.next();
@@ -142,11 +152,9 @@ public class AddInfo implements AddInfoIF {
             }
     }
 
-
-
-
     @Override
     public void deletePerson(){
+//        delete content form the address book.
         System.out.println("Enter the first name of the person to be deleted");
         String firstName = sc.next();
         if(addressBookHashMap.containsKey(firstName)){
@@ -160,6 +168,7 @@ public class AddInfo implements AddInfoIF {
 
     @Override
     public void display(){
+//        To display the content of address book.
         System.out.println("Contents of Address Book");
         for (String contact : addressBookHashMap.keySet()){
             AddressBook addressBook=addressBookHashMap.get(contact);
@@ -168,6 +177,7 @@ public class AddInfo implements AddInfoIF {
 
     }
     public void addAddressBook() {
+//        To add multiple address book in the dictionary.
         System.out.println("Enter name of address book");
         String addressBookName = scanner.next();
         if (addressBookDictionary.containsKey(addressBookName)) {
@@ -177,35 +187,50 @@ public class AddInfo implements AddInfoIF {
         AddInfo addInfo = new AddInfo();
         addInfo.setAddressBookName(addressBookName);
         addressBookDictionary.put(addressBookName,addInfo);
-        /*AddInfo addInfo1=new AddInfo();
-        addInfo1.addContact();*/
+
     }
     public void editAddressBook(){
+//        To edit the content from address book.
         System.out.println("Enter name of address book you wanna edit");
         String addressBookName=scanner.next();
         if(addressBookDictionary.containsKey(addressBookName)){
             addressBookDictionary.get(addressBookName);
-            //operations();
         }
         else{
             System.out.println("Book doesn't exist");
         }
     }
     public void displayContent(){
+//        to display the content of the dictionary.
         System.out.println("Content of address book dictionary");
         for (String bookName : addressBookDictionary.keySet()){
             System.out.println(bookName);
         }
     }
+    public void searchContent(){
+//        to search the content of address book from dictionary.
+        System.out.println("Enter name of address book you wanna search");
+        String addressBookName=scanner.next();
+        if(addressBookDictionary.containsKey(addressBookName)){
+            System.out.println("Enter name of city");
+            String city=sc.next();
+            Stream<Map.Entry<String, AddressBook>> entryStream = addressBookHashMap.entrySet().stream().filter(entry -> entry.getKey().equals(city.toLowerCase()));
+                    System.out.println(addressBookHashMap);
+        }
+        else{
+            System.out.println("Book doesn't exist");
+        }
+    }
     public void operationDictionary() {
+//        call every method related to address book dictionary to perform multiple operations in the address books.
         boolean changes = true;
         do {
             System.out.println("\nChoose the operation you want to perform");
-            System.out.println("1.Add Address Book\n2.Edit Entry of Existing address book\n3.Display Contact\n4.Exit Address book System");
+            System.out.println("1.Add Address Book\n2.Edit Entry of Existing address book\n3.Display Contact\n4.Search content in addressbook\n5.Exit Address book System");
             switch (scanner.nextInt()) {
                 case 1:
                     addAddressBook();
-                    addContact();
+                    operations();
                     break;
                 case 2:
                     editAddressBook();
@@ -216,6 +241,9 @@ public class AddInfo implements AddInfoIF {
                     display();
                     break;
                 case 4:
+                    searchContent();
+                    break;
+                case 5:
                     changes = false;
                     System.out.println("We are exiting");
             }
